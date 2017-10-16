@@ -40,3 +40,4 @@ def chinois(liste):             #En entrée une liste de listes de 2 éléments 
 
 test=[[1,3],[2,5],[3,7]]
 print (chinois(test))
+#Normalement ça marche
