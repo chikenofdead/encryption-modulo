@@ -1,8 +1,9 @@
 from random import randrange
+from functools import reduce
 from math import *
 
 def bezout(a,b):
-    a,b=max(a,b),min(a,b)
+    assert a >= b
     (r, u, v, r1, u1, v1) = (a, 1, 0, b, 0, 1)
     premiere_fois = True    
     while premiere_fois or r1 != 0:
@@ -13,14 +14,14 @@ def bezout(a,b):
 
 x,y=bezout(3,35)
 #print (x,y)
-
+"""
 def chinois(liste):             #En entrée une liste de listes de 2 éléments avec le reste et le modulo
     M = 1
     for i in liste:
         M = M*i[1]
     Mpart = []
     for j in liste:
-        Mpart += [int(M/j[1])]
+        Mpart += [int(M//j[1])]
     yliste = []
     for k in range (len(liste)):
         x, y = bezout(Mpart[k],liste[k][1])
@@ -28,10 +29,17 @@ def chinois(liste):             #En entrée une liste de listes de 2 éléments 
     res = 0
     for t in range(len(liste)):
         res += liste[t][0]*Mpart[t]*yliste[t]
-    return (res%M,M)
+    return (res%M,M)"""
 
-test=[[1,3],[2,5],[3,7]]
-#print (chinois(test))
+	
+def chinois(liste):
+    product = reduce(int.__mul__, [i[1] for i in liste])
+    S = 0
+    for rj, pj in liste:
+        S += rj * bezout(product//pj, pj)[0] * product//pj
+    return S % product, product
+test=[[9,11],[3,13],[42,200]]
+print(chinois(test))
 
 preums = [9239, 8629, 8221, 8089, 3881, 1669]
 cle = 2**607 - 1
@@ -49,5 +57,5 @@ def decrypter(L, p, premiers):
     print(M,_)
     return M
 
-preum=[11,13,200]
+preum=[11,13,7]
 print(decrypter(encryption(42, cle, preum), cle, preum))
